@@ -12,15 +12,15 @@ import Alamofire
 class ViewController: UIViewController, UITableViewDataSource {
 
     var results = [[String: Any]]()
-    var completeURL = String()
+    var passedUrlDict = [String: String]()
     
     @IBOutlet var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let url = urlStart + country + mediaType + resultLimit
+        let completeURL = "https://rss.applemarketingtools.com/api/v2/" + passedUrlDict["country"]! + "/" + passedUrlDict["mediaType"]! + "/" + passedUrlDict["chart"]! + "/" + passedUrlDict["resultLimit"]! + "/" + passedUrlDict["type"]! + ".json"
         Alamofire.request(completeURL).responseJSON { (response) in
-            print("CompleteURL = \(self.completeURL)")
+            print("CompleteURL = \(completeURL)")
             if let allData = response.result.value as? [String: Any] {
                 print(allData)
                 let feed = allData["feed"] as! [String: Any]
@@ -44,7 +44,6 @@ class ViewController: UIViewController, UITableViewDataSource {
 //                cell.profileImage.image = image as? UIImage
 //            }
 //        }
-        
         
         
         URLSession.shared.dataTask(with: URL(string: results[indexPath.row]["artworkUrl100"] as! String)! , completionHandler: { (data, response, error) -> Void in

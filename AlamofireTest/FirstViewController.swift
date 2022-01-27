@@ -10,41 +10,51 @@ import UIKit
 
 class FirstViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    var data = [["Media Type", "music","podacasts", "apps", "books"], ["Country", "in", "us", "au", "hk"], ["Music Type", "albums", "music-videos", "playlists", "songs"], ["Result Limit", "10","25","50"]]
+    var data = [["Media Type", "music","podcasts", "apps", "books"], ["Country", "in", "us", "au", "hk"], ["Type", "albums", "music-videos", "playlists", "songs"], ["Result Limit", "10","25","50"], ["Chart", "most-played"]]
     var url = "https://rss.applemarketingtools.com/api/v2/us/music/most-played/10/albums.json"
-    var country = "us"
-    var mediaType = "music"
-    var resultLimit = "25"
-    var musicType = "albums"
+    var urlDict = ["country": "", "mediaType": "", "resultLimit": "", "chart": "", "type": ""]
     // https://rss.applemarketingtools.com/api/v2/us/music/most-played/10/albums.json // JSON example
     @IBOutlet var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.allowsMultipleSelection = true
-        let arr = [[2, 1], [2, 2], [2, 3]]
-        for a in arr {
-            print(a)
-        }
-        print(Dictionary(grouping: data, by: {($0).first!}))
+        print(Dictionary(grouping: data, by: {$0.first!}).keys.sorted())
         
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        print("numberOfRowsInSection \(section)")
         return data[section].count - 1
     }
     func numberOfSections(in tableView: UITableView) -> Int {
-//        print("numberOfSections")
         return data.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        print("cellForRowAt")
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! FirstTableViewCell
         cell.textLabel!.text = data[indexPath.section][indexPath.row + 1 ]
+        var key = ""
+        switch indexPath.section {
+        case 0:
+            key = "mediaType"
+        case 1:
+            key = "country"
+        case 2:
+            key = "type"
+        case 3:
+            key = "resultLimit"
+        case 4:
+            key = "chart"
+        default:
+            cell.backgroundColor = UIColor.white
+            
+        }
+        if urlDict[key] == data[indexPath.section][indexPath.row + 1 ]  { // since urlDict["key"] will only have name of selected row, so if value of urlDict["key"] is ..
+            cell.backgroundColor = UIColor.red                            // equal to cell name then make it selected/red
+        }
+        else {
+            cell.backgroundColor = UIColor.white
+        }
         return cell
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        print("titleForHeaderInSection \(section)")
         return "\(data[section].first!)"
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -52,45 +62,48 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = self.tableView.cellForRow(at: indexPath)
-        cell?.accessoryType = .checkmark
-        cell?.isSelected = true
         switch indexPath.section {
         case 0:
-            mediaType = cell!.textLabel!.text!
+            urlDict["mediaType"] = cell!.textLabel!.text!
+            
+            if cell!.textLabel!.text == "music" {
+                data[2] = ["Type", "albums", "music-videos", "playlists", "songs"]
+                data[4] = ["Chart", "most-played"]
+            }
+            else if cell!.textLabel!.text == "podcasts" {
+                data[2] = ["Type", "podcast-episodes", "podcasts"]
+                data[4] = ["Chart", "top"]
+            }
+            else if cell!.textLabel!.text == "apps" {
+                data[2] = ["Type", "apps"]
+                data[4] = ["Chart", "top-free", "top-paid"]
+            }
+            else if cell!.textLabel!.text == "books" {
+                data[2] = ["Type", "books"]
+                data[4] = ["Chart", "top-free", "top-paid"]
+            }
         case 1:
-            country = cell!.textLabel!.text!
+            urlDict["country"] = cell!.textLabel!.text!
         case 2:
-            musicType = cell!.textLabel!.text!
+            urlDict["type"] = cell!.textLabel!.text!
         case 3:
-            resultLimit = cell!.textLabel!.text!
+            urlDict["resultLimit"] = cell!.textLabel!.text!
+        case 4:
+            urlDict["chart"] = cell!.textLabel!.text!
         default:
             url = "https://rss.applemarketingtools.com/api/v2/us/music/most-played/10/albums.json"
         }
+        tableView.reloadData()
     }
-
-    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-
-        if let selectedIndexPaths = tableView.indexPathsForSelectedRows {
-            print("selectedIndexPaths = \(selectedIndexPaths)")
-            for selectedIndexPath in selectedIndexPaths {
-                print("selectedIndexPath = \(selectedIndexPath)")
-                if selectedIndexPath.section == indexPath.section {
-                    tableView.deselectRow(at: selectedIndexPath, animated: true)
-                    tableView.cellForRow(at: selectedIndexPath)?.accessoryType = .none
-                }
-            }
-        }
-        return indexPath
-    }
-
+    
     @IBAction func showList(_ sender: UIButton) {
         performSegue(withIdentifier: "toVC", sender: self)
+        
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        url = "https://rss.applemarketingtools.com/api/v2/" + country + "/" + mediaType + "/most-played/" + resultLimit + "/" + musicType + ".json"
         let a = segue.destination as! ViewController
-        a.completeURL = url
-        print("a.complete = \(a.completeURL)")
-        print(url)
+        a.passedUrlDict = urlDict
+        print("a.passedUrlDict = \(a.passedUrlDict)")
+        print(urlDict)
     }
 }
