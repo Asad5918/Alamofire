@@ -96,10 +96,10 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         tableView.reloadData()
     }
     
-    @IBAction func showList(_ sender: UIButton) {
-        performSegue(withIdentifier: "toVC", sender: self)
-        
-    }
+//    @IBAction func showList(_ sender: UIButton) {
+//        performSegue(withIdentifier: "toVC", sender: self)
+//        
+//    }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let a = segue.destination as! ViewController
         a.passedUrlDict = urlDict

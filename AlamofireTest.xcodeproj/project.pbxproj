@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E1FAE9327A2E69100D784B8 /* MusicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E1FAE9227A2E69100D784B8 /* MusicViewController.swift */; };
+		2E1FAE9527A2E6C300D784B8 /* PodcastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E1FAE9427A2E6C300D784B8 /* PodcastViewController.swift */; };
+		2E1FAE9727A2E6DA00D784B8 /* AppsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E1FAE9627A2E6DA00D784B8 /* AppsViewController.swift */; };
+		2E1FAE9927A2E6F800D784B8 /* BooksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E1FAE9827A2E6F800D784B8 /* BooksViewController.swift */; };
 		2E200EAB2799BF2600DC7CA9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E200EAA2799BF2600DC7CA9 /* AppDelegate.swift */; };
 		2E200EAD2799BF2600DC7CA9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E200EAC2799BF2600DC7CA9 /* ViewController.swift */; };
 		2E200EB02799BF2600DC7CA9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2E200EAE2799BF2600DC7CA9 /* Main.storyboard */; };
@@ -19,6 +23,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2E1FAE9227A2E69100D784B8 /* MusicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicViewController.swift; sourceTree = "<group>"; };
+		2E1FAE9427A2E6C300D784B8 /* PodcastViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastViewController.swift; sourceTree = "<group>"; };
+		2E1FAE9627A2E6DA00D784B8 /* AppsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppsViewController.swift; sourceTree = "<group>"; };
+		2E1FAE9827A2E6F800D784B8 /* BooksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksViewController.swift; sourceTree = "<group>"; };
 		2E200EA72799BF2600DC7CA9 /* AlamofireTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlamofireTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E200EAA2799BF2600DC7CA9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2E200EAC2799BF2600DC7CA9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -76,11 +84,15 @@
 			isa = PBXGroup;
 			children = (
 				2E200EAA2799BF2600DC7CA9 /* AppDelegate.swift */,
-				2E2181E8279B0C0B005281D3 /* FirstViewController.swift */,
+				2E1FAE9227A2E69100D784B8 /* MusicViewController.swift */,
+				2E1FAE9427A2E6C300D784B8 /* PodcastViewController.swift */,
+				2E1FAE9827A2E6F800D784B8 /* BooksViewController.swift */,
+				2E1FAE9627A2E6DA00D784B8 /* AppsViewController.swift */,
 				2E200EAC2799BF2600DC7CA9 /* ViewController.swift */,
+				2E2181C8279ACDB7005281D3 /* TableViewCell.swift */,
 				2E200EAE2799BF2600DC7CA9 /* Main.storyboard */,
 				2E2181EA279B1473005281D3 /* FirstTableViewCell.swift */,
-				2E2181C8279ACDB7005281D3 /* TableViewCell.swift */,
+				2E2181E8279B0C0B005281D3 /* FirstViewController.swift */,
 				2E200EB12799BF2900DC7CA9 /* Assets.xcassets */,
 				2E200EB32799BF2900DC7CA9 /* LaunchScreen.storyboard */,
 				2E200EB62799BF2900DC7CA9 /* Info.plist */,
@@ -212,9 +224,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2E1FAE9927A2E6F800D784B8 /* BooksViewController.swift in Sources */,
 				2E2181C9279ACDB7005281D3 /* TableViewCell.swift in Sources */,
+				2E1FAE9327A2E69100D784B8 /* MusicViewController.swift in Sources */,
 				2E200EAD2799BF2600DC7CA9 /* ViewController.swift in Sources */,
 				2E2181EB279B1473005281D3 /* FirstTableViewCell.swift in Sources */,
+				2E1FAE9727A2E6DA00D784B8 /* AppsViewController.swift in Sources */,
+				2E1FAE9527A2E6C300D784B8 /* PodcastViewController.swift in Sources */,
 				2E200EAB2799BF2600DC7CA9 /* AppDelegate.swift in Sources */,
 				2E2181E9279B0C0B005281D3 /* FirstViewController.swift in Sources */,
 			);

@@ -12,14 +12,14 @@ import Alamofire
 class ViewController: UIViewController, UITableViewDataSource {
 
     var results = [[String: Any]]()
-    var passedUrlDict = [String: String]()
-    
+    var passedUrlDict = ["country": "", "mediaType": "", "resultLimit": "", "chart": "", "type": ""]
     @IBOutlet var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(passedUrlDict)
         let completeURL = "https://rss.applemarketingtools.com/api/v2/" + passedUrlDict["country"]! + "/" + passedUrlDict["mediaType"]! + "/" + passedUrlDict["chart"]! + "/" + passedUrlDict["resultLimit"]! + "/" + passedUrlDict["type"]! + ".json"
-        Alamofire.request(completeURL).responseJSON { (response) in
+        Alamofire.request("https://rss.applemarketingtools.com/api/v2/us/music/most-played/10/albums.json").responseJSON { (response) in
             print("CompleteURL = \(completeURL)")
             if let allData = response.result.value as? [String: Any] {
                 print(allData)
