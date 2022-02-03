@@ -8,16 +8,57 @@
 
 import UIKit
 import Alamofire
+import DropDown
 
 class PodcastViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     var podcast = [[String: Any]]()
+    var url = "https://rss.applemarketingtools.com/api/v2/us/podcasts/top/10/podcast-episodes.json"
+    let countryMenu = DropDown()
+    let typeMenu = DropDown()
+    var selectedCountry = "us"
+    var selectedType = "podcasts"
     
     @IBOutlet var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Alamofire.request("https://rss.applemarketingtools.com/api/v2/us/podcasts/top/10/podcast-episodes.json").responseJSON { (response) in
+        loadAPI(apiURL: url)
+        let myView = UIView(frame: navigationController?.navigationBar.frame ?? .zero)
+        navigationController?.navigationBar.topItem?.titleView = myView
+        guard let topView = navigationController?.navigationBar.topItem?.titleView else {
+            return
+        }
+        countryMenu.dataSource = ["in", "us", "hk", "eg"]
+        typeMenu.dataSource = ["podcast-episodes", "podcasts"]
+        countryMenu.anchorView = topView
+        typeMenu.anchorView = topView
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Country", style: .plain, target: self, action: #selector(countryTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Type", style: .plain, target: self, action: #selector(typeTapped))
+
+    }
+    @objc func countryTapped() {
+        countryMenu.show()
+        countryMenu.selectionAction = { index, title in
+            self.selectedCountry = title
+            self.url = "https://rss.applemarketingtools.com/api/v2/" + self.selectedCountry + "/podcasts/top/10/" + self.selectedType + ".json"
+            print(self.url)
+            self.navigationItem.leftBarButtonItem?.title = self.selectedCountry
+            self.loadAPI(apiURL: self.url)
+        }
+    }
+    @objc func typeTapped() {
+        typeMenu.show()
+        typeMenu.selectionAction = { index, title in
+            self.selectedType = title
+            self.url = "https://rss.applemarketingtools.com/api/v2/" + self.selectedCountry + "/podcasts/top/10/" + self.selectedType + ".json"
+            print(self.url)
+            self.navigationItem.rightBarButtonItem?.title = self.selectedType
+            self.loadAPI(apiURL: self.url)
+        }
+    }
+    func loadAPI(apiURL: String) {
+        Alamofire.request(apiURL).responseJSON { (response) in
             if let allData = response.result.value as? [String: Any] {
                 print(allData)
                 let feed = allData["feed"] as! [String: Any]
@@ -36,15 +77,7 @@ class PodcastViewController: UIViewController, UITableViewDelegate, UITableViewD
         cell.artistName.text = podcast[indexPath.row]["artistName"] as? String
         cell.artistId.text = podcast[indexPath.row]["id"] as? String
         cell.releaseDate.text = podcast[indexPath.row]["name"] as? String
-        URLSession.shared.dataTask(with: URL(string: podcast[indexPath.row]["artworkUrl100"] as! String)! , completionHandler: { (data, response, error) -> Void in
-            if error != nil {
-                print(error ?? "No Error")
-                return
-            }
-            DispatchQueue.main.async(execute: { () -> Void in
-                cell.profileImage.image = UIImage(data: data!)
-            })
-        }).resume()
+        cell.profileImage.sd_setImage(with: URL(string: podcast[indexPath.row]["artworkUrl100"] as! String)!, placeholderImage: UIImage(named: "Default podcast.jpeg"))
         return cell
     }
 }

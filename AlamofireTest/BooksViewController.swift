@@ -8,11 +8,16 @@
 
 import UIKit
 import Alamofire
+import DropDown
 
 class BooksViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     var books = [[String: Any]]()
-    
+    var url = "https://rss.applemarketingtools.com/api/v2/us/books/top-free/10/books.json"
+    let countryMenu = DropDown()
+    let typeMenu = DropDown()
+    var selectedCountry = "us"
+    var selectedType = "books"
     @IBOutlet var tableView: UITableView!
     
     override func viewDidLoad() {
@@ -36,15 +41,7 @@ class BooksViewController: UIViewController, UITableViewDelegate, UITableViewDat
         cell.artistName.text = books[indexPath.row]["artistName"] as? String
         cell.artistId.text = books[indexPath.row]["artistId"] as? String
         cell.releaseDate.text = books[indexPath.row]["releaseDate"] as? String
-        URLSession.shared.dataTask(with: URL(string: books[indexPath.row]["artworkUrl100"] as! String)! , completionHandler: { (data, response, error) -> Void in
-            if error != nil {
-                print(error ?? "No Error")
-                return
-            }
-            DispatchQueue.main.async(execute: { () -> Void in
-                cell.profileImage.image = UIImage(data: data!)
-            })
-        }).resume()
+        cell.profileImage.sd_setImage(with: URL(string: books[indexPath.row]["artworkUrl100"] as! String)!, placeholderImage: UIImage(named: "Default books.png"))
         return cell
     }
 }

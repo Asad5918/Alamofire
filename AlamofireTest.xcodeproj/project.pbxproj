@@ -86,8 +86,8 @@
 				2E200EAA2799BF2600DC7CA9 /* AppDelegate.swift */,
 				2E1FAE9227A2E69100D784B8 /* MusicViewController.swift */,
 				2E1FAE9427A2E6C300D784B8 /* PodcastViewController.swift */,
-				2E1FAE9827A2E6F800D784B8 /* BooksViewController.swift */,
 				2E1FAE9627A2E6DA00D784B8 /* AppsViewController.swift */,
+				2E1FAE9827A2E6F800D784B8 /* BooksViewController.swift */,
 				2E200EAC2799BF2600DC7CA9 /* ViewController.swift */,
 				2E2181C8279ACDB7005281D3 /* TableViewCell.swift */,
 				2E200EAE2799BF2600DC7CA9 /* Main.storyboard */,
@@ -316,6 +316,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = "";
 			};
 			name = Debug;
 		};
@@ -370,6 +371,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

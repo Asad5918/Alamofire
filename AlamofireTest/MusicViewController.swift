@@ -8,16 +8,66 @@
 
 import UIKit
 import Alamofire
+import SDWebImage
+import DropDown
 
 class MusicViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     var music = [[String: Any]]()
+    var url = "https://rss.applemarketingtools.com/api/v2/us/music/most-played/25/albums.json"
+    let countryMenu = DropDown()
+    let typeMenu = DropDown()
+    var selectedCountry = "us"
+    var selectedType = "albums"
     
     @IBOutlet var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Alamofire.request("https://rss.applemarketingtools.com/api/v2/us/music/most-played/10/albums.json").responseJSON { (response) in
+        loadAPI(apiURL: url)
+        let myView = UIView(frame: navigationController?.navigationBar.frame ?? .zero)
+        navigationController?.navigationBar.topItem?.titleView = myView
+        guard let topView = navigationController?.navigationBar.topItem?.titleView else {
+            return
+        }
+        countryMenu.dataSource = ["in", "us", "hk", "eg"]
+        typeMenu.dataSource = ["albums", "music-videos", "playlists", "songs"]
+        countryMenu.anchorView = topView
+        typeMenu.anchorView = topView
+//        let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapTopItem))
+//        gesture.numberOfTapsRequired = 1
+//        gesture.numberOfTouchesRequired = 1
+//        topView.addGestureRecognizer(gesture)
+//        @objc func didTapTopItem() {
+//            countryMenu.show()
+//        }
+//        countryMenu.selectionAction = { index, title  in
+//            print("Index = \(index), title = \(title) ")
+//        }
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Country", style: .plain, target: self, action: #selector(countryTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Type", style: .plain, target: self, action: #selector(typeTapped))
+    }
+
+    @objc func countryTapped() {
+        countryMenu.show()
+        countryMenu.selectionAction = { index, title in
+            self.selectedCountry = title
+            self.url = "https://rss.applemarketingtools.com/api/v2/" + self.selectedCountry + "/music/most-played/10/" + self.selectedType + ".json"
+            self.navigationItem.leftBarButtonItem?.title = self.selectedCountry
+            self.loadAPI(apiURL: self.url)
+        }
+    }
+    @objc func typeTapped() {
+        typeMenu.show()
+        typeMenu.selectionAction = { index, title in
+            self.selectedType = title
+            self.url = "https://rss.applemarketingtools.com/api/v2/" + self.selectedCountry + "/music/most-played/25/" + self.selectedType + ".json"
+            self.navigationItem.rightBarButtonItem?.title = self.selectedType
+            self.loadAPI(apiURL: self.url)
+        }
+    }
+    func loadAPI(apiURL: String) {
+        Alamofire.request(apiURL).responseJSON { (response) in
             if let allData = response.result.value as? [String: Any] {
                 print(allData)
                 let feed = allData["feed"] as! [String: Any]
@@ -36,15 +86,8 @@ class MusicViewController: UIViewController, UITableViewDataSource, UITableViewD
         cell.artistName.text = music[indexPath.row]["artistName"] as? String
         cell.artistId.text = music[indexPath.row]["artistId"] as? String
         cell.releaseDate.text = music[indexPath.row]["releaseDate"] as? String
-        URLSession.shared.dataTask(with: URL(string: music[indexPath.row]["artworkUrl100"] as! String)! , completionHandler: { (data, response, error) -> Void in
-            if error != nil {
-                print(error ?? "No Error")
-                return
-            }
-            DispatchQueue.main.async(execute: { () -> Void in
-                cell.profileImage.image = UIImage(data: data!)
-            })
-        }).resume()
+        cell.profileImage.sd_setImage(with: URL(string: music[indexPath.row]["artworkUrl100"] as! String)!, placeholderImage: UIImage(named: "Default music.png"))
         return cell
     }
+    
 }
